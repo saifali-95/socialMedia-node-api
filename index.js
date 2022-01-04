@@ -6,14 +6,14 @@ const mongoose = require("mongoose");
 const userRoute = require("./routes/users")
 const authRoute = require("./routes/auth")
 
-
 const app = express();
 
 dotenv.config();
 
-mongoose.connect(process.env.MONGO_URL, {useNewUrlParser: true}, () => {
-  console.log('MongoDB Server Connected');
-});
+mongoose 
+ .connect(process.env.MONGO_URL, {useNewUrlParser: true})   
+ .then(() => console.log("Database connected!"))
+ .catch(err => console.log(err));
 
 //middleware
 app.use(express.json());
