@@ -28,12 +28,20 @@ router.post("/login", async (req, res)=> {
   try {
     //create new user
     const user = await User.findOne({email: req.body.email});
-    !user && res.status(400).json("user not found");
-    
+
+    if(!user) {
+      res.status(400).json("user not found");
+      return;
+    }
+
     //validate hashed password
     const validPassword = await bcrypt.compare(req.body.password, user.password);
-    !validPassword && res.status(400).json("password is incorrect");
-
+          
+    if(!validPassword) {
+      res.status(400).json("password is incorrect");
+      return;
+    }
+     
     //respond 200 succesful if password and username are correct
     res.status(200).json(user);
   } catch(err) {
