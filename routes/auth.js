@@ -1,16 +1,20 @@
 const router = require("express").Router();
 const User = require("../models/User")
 
-router.get("/register", async (req, res)=> {
+router.post("/register", async (req, res)=> {
   
-  const user = await new User ({
-    username: "john",
-    email: "john@gmail.com",
-    password: "123456"
+  const newUser = new User ({
+    username: req.body.username,
+    email: req.body.email,
+    password: req.body.password
   })
 
-  await user.save();
-  res.send("Ok")
+  try {
+    const user = await newUser.save();
+    res.status(200).json(user)
+  } catch {
+    console.log(err);
+  }
 
 });
 
