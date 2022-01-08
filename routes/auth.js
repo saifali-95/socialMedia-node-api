@@ -4,7 +4,6 @@ const bcrypt = require("bcrypt");
 
 //Register new user
 router.post("/register", async (req, res)=> {
-  
   try {
     //create new user
     const salt = await bcrypt.genSalt(10);
@@ -24,7 +23,6 @@ router.post("/register", async (req, res)=> {
 
 //Login
 router.post("/login", async (req, res)=> {
-  
   try {
     //create new user
     const user = await User.findOne({email: req.body.email});
