@@ -18,7 +18,7 @@ router.put("/:id", async (req, res)=> {
       const user = await User.findByIdAndUpdate(req.params.id, {
         $set: req.body,
       })
-      res.status(200).json("Your update has been made");
+      return res.status(200).json("Your update has been made");
     }
     catch (err) {
       return res.status(500).json(err);
@@ -33,7 +33,7 @@ router.delete("/:id", async (req, res)=> {
   if(req.body.userId === req.params.id || req.body.isAdmin) {
     try {
       await User.findByIdAndDelete(req.body.userId);
-      res.status(200).json("Your account has been deleted");
+      return res.status(200).json("Your account has been deleted");
     }
     catch (err) {
       return res.status(500).json(err);
@@ -67,17 +67,17 @@ router.put("/:id/follow", async(req, res) => {
       if(!user.followers.includes(req.body.userId)) {
         await user.updateOne({$push: {followers: req.body.userId}});
         await currentUser.updateOne({$push: {followings: req.params.id}});
-        res.status(200).json("Successfully followed this user");
+        return res.status(200).json("Successfully followed this user");
       }
       else {
-        res.status(403).json("You are already following this user");
+        return res.status(403).json("You are already following this user");
       }
     }
     catch (err) {
-      res.status(500).json(err)
+      return res.status(500).json(err)
     }
   } else {
-    res.status(403).json("You cannot follow yourself");
+    return res.status(403).json("You cannot follow yourself");
   }
 })
 
@@ -94,17 +94,17 @@ router.put("/:id/unfollow", async(req, res) => {
       if(user.followers.includes(req.body.userId)) {
         await user.updateOne({$pull: {followers: req.body.userId}});
         await currentUser.updateOne({$pull: {followings: req.params.id}});
-        res.status(200).json("Successfully unfollowed this user");
+        return res.status(200).json("Successfully unfollowed this user");
       }
       else {
-        res.status(403).json("You have already unfollowed this user");
+        return res.status(403).json("You have already unfollowed this user");
       }
     }
     catch (err) {
-      res.status(500).json(err)
+      return res.status(500).json(err)
     }
   } else {
-    res.status(403).json("You cannot unfollow yourself");
+    return res.status(403).json("You cannot unfollow yourself");
   }
 })
 
